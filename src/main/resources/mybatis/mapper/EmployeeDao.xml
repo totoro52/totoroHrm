@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.totoro.dao.EmployeeDao">
+
+    <select id="getAllEmployee" resultMap="employeeMap">
+        select * from employee_inf
+    </select>
+    
+    <insert id="addEmployee">
+        INSERT INTO `employee_inf`(`DEPT_ID`, `JOB_ID`, `NAME`, `CARD_ID`, `ADDRESS`, `POST_CODE`, `TEL`, `PHONE`, `QQ_NUM`, `EMAIL`, `SEX`, `PARTY`, `BIRTHDAY`, `RACE`, `EDUCATION`, `SPECIALITY`, `HOBBY`, `REMARK`, `CREATE_DATE`) VALUES (
+           #{dept.id},#{job.id},#{name},#{cardId},#{address},#{postCode},#{tel},#{phone},#{qqNum},#{email},#{sex},#{party},#{birthday},#{race},#{education},#{speciality},#{hobby},#{remark},#{createDate}
+        )
+    </insert>
+
+    <update id="updateEmployee">
+        update employee_inf
+        <trim prefix="set" suffixOverrides=",">
+            <if test="dept!=null and dept.id!=null">
+                DEPT_ID = #{dept.id},
+            </if>
+            <if test="job!=null and job.id!=null">
+                JOB_ID = #{job.id},
+            </if>
+            <if test="name!=null">
+                name = #{name},
+            </if>
+            <if test="cardId!=null">
+                CARD_ID = #{cardId},
+            </if>
+            <if test="address!=null">
+                ADDRESS = #{address},
+            </if>
+            <if test="tel!=null">
+                TEL = #{tel},
+            </if>
+            <if test="phone!=null">
+                PHONE = #{phone},
+            </if>
+            <if test="qqNum!=null">
+                QQ_NUM = #{qqNum},
+            </if>
+            <if test="email!=null">
+                EMAIL = #{email},
+            </if>
+            <if test="sex!=null">
+                SEX = #{sex},
+            </if>
+            <if test="party!=null">
+                PARTY = #{party},
+            </if>
+            <if test="birthday!=null">
+                BIRTHDAY = #{birthday},
+            </if>
+            <if test="race!=null">
+                RACE = #{race},
+            </if>
+            <if test="education!=null">
+                EDUCATION = #{education},
+            </if>
+            <if test="speciality!=null">
+                SPECIALITY = #{speciality},
+            </if>
+            <if test="hobby!=null">
+                HOBBY = #{hobby},
+            </if>
+            <if test="remark!=null">
+                REMARK = #{remark},
+            </if>
+            <if test="createDate!=null">
+                CREATE_DATE = #{createDate},
+            </if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteEmployeeById">
+        delete from employee_inf where id = #{id}
+    </delete>
+
+    <resultMap id="employeeMap" type="cn.totoro.entity.Employee">
+        <collection property="dept" column="dept_id"  ofType="cn.totoro.entity.Dept" select="cn.totoro.dao.DeptDao.getDeptById" />
+        <collection property="job" column="job_id"  ofType="cn.totoro.entity.Job" select="cn.totoro.dao.JobDao.getJobById" />
+    </resultMap>
+
+
+
+    <select id="getEmployeeByPage" resultType="cn.totoro.entity.Employee">
+        select * from employee_inf limit #{page},#{pageSize}
+    </select>
+
+
+    <select id="getEmployeeTotal" resultType="java.lang.Integer">
+        select count(*) from employee_inf
+    </select>
+
+
+
+
+</mapper>

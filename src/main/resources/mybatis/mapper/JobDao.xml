@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.totoro.dao.JobDao">
+
+    <select id="getAllJob" resultType="cn.totoro.entity.Job">
+        select * from job_inf
+    </select>
+
+    <select id="getJobById" resultType="cn.totoro.entity.Job">
+        select * from job_inf where id = #{id}
+    </select>
+
+    <insert id="addJob" keyProperty="id">
+        insert into job_inf(name,remark) values (#{name},#{remark})
+    </insert>
+
+
+    <update id="updateJob">
+        update job_inf
+        <trim prefix="set" suffixOverrides=",">
+            <if test="name!=null">
+                name = #{name},
+            </if>
+            <if test="remark!=null">
+                remark = #{remark},
+            </if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteJobById">
+        delete from job_inf where id = #{id}
+    </delete>
+
+
+
+</mapper>

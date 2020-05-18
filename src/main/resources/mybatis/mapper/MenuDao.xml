@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.totoro.dao.MenuDao">
+
+    <!-- 获取所有的父级菜单 -->
+    <select id="getAllParentMenus" resultMap="menusMap">
+        select * from menu_inf where parent_id = 0 or parent_id is null
+    </select>
+
+    <!-- 获取所有子级 -->
+    <select id="getAllChildMenus" resultMap="menusMap">
+        select * from menu_inf where parent_id = #{id}
+    </select>
+
+    <resultMap id="menusMap" type="cn.totoro.entity.Menu">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="parentId" column="parent_id"/>
+        <collection property="childMenu" ofType="cn.totoro.entity.Menu" column="id" select="getAllChildMenus"/>
+    </resultMap>
+</mapper>
